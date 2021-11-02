@@ -34,13 +34,13 @@ public final class Constants {
                 new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
         /* Swerve Current Limiting */
-        public static final int angleContinuousCurrentLimit = 10;//25
-        public static final int anglePeakCurrentLimit = 20;//40
+        public static final int angleContinuousCurrentLimit = 25;//25
+        public static final int anglePeakCurrentLimit = 40;//40
         public static final double anglePeakCurrentDuration = 0.1;
         public static final boolean angleEnableCurrentLimit = true;
 
-        public static final int driveContinuousCurrentLimit = 35;
-        public static final int drivePeakCurrentLimit = 60;
+        public static final int driveContinuousCurrentLimit = 25;
+        public static final int drivePeakCurrentLimit = 40;
         public static final double drivePeakCurrentDuration = 0.1;
         public static final boolean driveEnableCurrentLimit = true;
 
@@ -66,7 +66,7 @@ public final class Constants {
         public static final double maxAngularVelocity = 11.5;
 
         /* Neutral Modes */
-        public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
+        public static final NeutralMode angleNeutralMode = NeutralMode.Brake;
         public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
 
         /* Motor Inverts */

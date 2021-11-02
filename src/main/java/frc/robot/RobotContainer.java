@@ -24,6 +24,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
   /* Controllers */
   private final Joystick driver = new Joystick(0);
+  private final XboxController xDrive = new XboxController(0);
 
   /* Drive Controls */
   private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -35,6 +36,8 @@ public class RobotContainer {
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
+  //commands
+  //private final SwerveDoubleSupp swerve = new SwerveDoubleSupp(s_Swerve, ()->driveController.getX(Hand.kLeft), () -> driveController.getY(Hand.kLeft), () -> driveController.getX(Hand.kRight), translationAxis, strafeAxis, rotationAxis, true, true);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

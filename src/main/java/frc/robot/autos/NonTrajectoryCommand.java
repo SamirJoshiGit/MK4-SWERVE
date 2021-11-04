@@ -9,21 +9,29 @@ import frc.robot.Constants.Swerve;
 
 public class NonTrajectoryCommand extends CommandBase {
   /** Creates a new NonTrajectoryCommand. */
-  private final Swerve s_Drive;
+  private Swerve s_Drive;
   private boolean fieldRelative;
   private boolean openLoop;
+  private int translationAxis;
+  private int strafeAxis;
+  private int rotationAxis;
 
-  public NonTrajectoryCommand(Swerve s_Drive, boolean fieldRelative, boolean openLoop) {
+  public NonTrajectoryCommand(Swerve s_Drive, int translationAxis, int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
     this.s_Drive = s_Drive;
+    //addRequirements(s_Drive);
+    this.translationAxis = translationAxis;
+    this.strafeAxis = strafeAxis;
+    this.rotationAxis = rotationAxis;
     this.fieldRelative = fieldRelative;
     this.openLoop = openLoop;
-    //addRequirements(s_Drive);
+    
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

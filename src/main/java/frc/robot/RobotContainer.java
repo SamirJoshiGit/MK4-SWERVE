@@ -7,9 +7,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import java.util.function.DoubleSupplier;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -37,14 +39,14 @@ public class RobotContainer {
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
   //commands
-  //private final SwerveDoubleSupp swerve = new SwerveDoubleSupp(s_Swerve, ()->driveController.getX(Hand.kLeft), () -> driveController.getY(Hand.kLeft), () -> driveController.getX(Hand.kRight), translationAxis, strafeAxis, rotationAxis, true, true);
-
+  private final SwerveDoubleSupp swerveControl = new SwerveDoubleSupp(s_Swerve, () -> xDrive.getX(Hand.kLeft), () -> xDrive.getY(Hand.kLeft), () -> xDrive.getX(Hand.kRight), translationAxis, strafeAxis, rotationAxis, true, true);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     boolean fieldRelative = true;
     boolean openLoop = true;
-    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    s_Swerve.setDefaultCommand(swerveControl);
+    //s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
 
     // Configure the button bindings
     configureButtonBindings();

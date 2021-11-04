@@ -84,15 +84,17 @@ public class Swerve extends SubsystemBase {
     }
 
     public void zeroGyro(){
-        gyro.reset();
+        gyro.zeroYaw();
     }
 
     public Rotation2d getYaw() {
-        double[] ypr = new double[3];
-        ypr[0] = gyro.getYaw();
-        ypr[1] = gyro.getPitch();
-        ypr[2] = gyro.getRoll();
-        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - ypr[0]) : Rotation2d.fromDegrees(ypr[0]);
+        //double[] ypr = new double[3];
+        //ypr[0] = gyro.getYaw();
+        //ypr[1] = gyro.getPitch();
+        //ypr[2] = gyro.getRoll();
+        double yaw = gyro.getYaw();
+        //return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - ypr[0]) : Rotation2d.fromDegrees(ypr[0]);
+        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - yaw) : Rotation2d.fromDegrees(yaw);
     }
 
     @Override

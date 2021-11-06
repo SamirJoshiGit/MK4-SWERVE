@@ -25,17 +25,17 @@ import frc.robot.subsystems.Swerve;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class LineWith180Flip extends SequentialCommandGroup {
-  public LineWith180Flip(Swerve s_Swerve){
+public class AccuracyTest extends SequentialCommandGroup {
+  public AccuracyTest(Swerve s_Swerve){
     TrajectoryConfig config =
         new TrajectoryConfig(
                 Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared).setReversed(true)
             .setKinematics(Constants.Swerve.swerveKinematics);
 
 
     // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
+    Trajectory GoStraight =
         TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
                 new Pose2d(0, 0, new Rotation2d(0)),
@@ -45,6 +45,16 @@ public class LineWith180Flip extends SequentialCommandGroup {
                 new Pose2d(-2, 0, new Rotation2d(0)),
                 config);
 
+      Trajectory StrafeCurve =
+          TrajectoryGenerator.generateTrajectory(
+                // Start at the origin facing the +X direction
+                new Pose2d(-2, 0, new Rotation2d(0)),
+                // Pass through these two interior waypoints, making an 's' curve path
+                List.of(new Translation2d(-1.5, 1), new Translation2d(-1.5, .5)),
+                // End 3 meters straight ahead of where we started, facing forward
+                new Pose2d(-1, 2, new Rotation2d(0)),
+                config);    
+
     var thetaController =
         new ProfiledPIDController(
             Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
@@ -52,7 +62,7 @@ public class LineWith180Flip extends SequentialCommandGroup {
 
     SwerveControllerCommand swerveControllerCommand =
         new SwerveControllerCommand(
-            exampleTrajectory,
+            GoStraight,
             s_Swerve::getPose,
             Constants.Swerve.swerveKinematics,
             new PIDController(Constants.AutoConstants.kPXController, 0, 0),
@@ -61,10 +71,20 @@ public class LineWith180Flip extends SequentialCommandGroup {
             s_Swerve::setModuleStates,
             s_Swerve);
 
+      SwerveControllerCommand swerveControllerCommand2 =
+        new SwerveControllerCommand(
+             StrafeCurve,
+             s_Swerve::getPose,
+             Constants.Swerve.swerveKinematics,
+             new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+             new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+             thetaController,
+             s_Swerve::setModuleStates,
+             s_Swerve);
 
     addCommands(
-        new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-        swerveControllerCommand
+        new InstantCommand(() -> s_Swerve.resetOdometry(GoStraight.getInitialPose())),
+        swerveControllerCommand, swerveControllerCommand2
     );
 }
 }

@@ -16,10 +16,13 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
+import frc.robot.Wait;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.subsystems.Swerve;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -27,6 +30,7 @@ import frc.robot.subsystems.Swerve;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AccuracyTest extends SequentialCommandGroup {
   public AccuracyTest(Swerve s_Swerve){
+    s_Swerve.zeroGyro();
     TrajectoryConfig config =
         new TrajectoryConfig(
                 Constants.AutoConstants.kMaxSpeedMetersPerSecond,
@@ -40,19 +44,19 @@ public class AccuracyTest extends SequentialCommandGroup {
                 // Start at the origin facing the +X direction
                 new Pose2d(0, 0, new Rotation2d(0)),
                 // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(-0.5, 0), new Translation2d(-1, 0)),
+                List.of(new Translation2d(-Units.feetToMeters(3)-AutoConstants.kOffset, .05)), 
                 // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(-2, 0, new Rotation2d(0)),
+                new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0)),
                 config);
 
       Trajectory StrafeCurve =
           TrajectoryGenerator.generateTrajectory(
                 // Start at the origin facing the +X direction
-                new Pose2d(-2, 0, new Rotation2d(0)),
+                new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0)),
                 // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(-1.5, 1), new Translation2d(-1.5, .5)),
+                List.of(new Translation2d(-Units.feetToMeters(3)-AutoConstants.kOffset, .05)), 
                 // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(-1, 2, new Rotation2d(0)),
+                new Pose2d(0, 0, new Rotation2d(0)),
                 config);    
 
     var thetaController =
@@ -84,7 +88,7 @@ public class AccuracyTest extends SequentialCommandGroup {
 
     addCommands(
         new InstantCommand(() -> s_Swerve.resetOdometry(GoStraight.getInitialPose())),
-        swerveControllerCommand, swerveControllerCommand2
+        swerveControllerCommand, new Wait(4), swerveControllerCommand2
     );
 }
 }

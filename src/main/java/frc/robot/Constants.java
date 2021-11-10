@@ -66,8 +66,8 @@ public final class Constants {
         public static final double maxAngularVelocity = 11.5;
 
         /* Neutral Modes */
-        public static final NeutralMode angleNeutralMode = NeutralMode.Brake;
-        public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
+        public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
+        public static final NeutralMode driveNeutralMode = NeutralMode.Coast;
 
         /* Motor Inverts */
         public static final boolean driveMotorInvert = false;
@@ -124,7 +124,8 @@ public final class Constants {
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-    
+        public static final double kOffset = Units.feetToMeters(1);
+        public static final double kOffsetSide = Units.inchesToMeters(9); 
         public static final double kPXController = 1;
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;

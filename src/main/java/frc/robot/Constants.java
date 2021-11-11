@@ -66,8 +66,8 @@ public final class Constants {
         public static final double maxAngularVelocity = 11.5;
 
         /* Neutral Modes */
-        public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
-        public static final NeutralMode driveNeutralMode = NeutralMode.Coast;
+        public static final NeutralMode angleNeutralMode = NeutralMode.Brake;
+        public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
 
         /* Motor Inverts */
         public static final boolean driveMotorInvert = false;

@@ -88,7 +88,7 @@ public class AccuracyTest extends SequentialCommandGroup {
 
     addCommands(
         new InstantCommand(() -> s_Swerve.resetOdometry(GoStraight.getInitialPose())),
-        swerveControllerCommand, new Wait(4), swerveControllerCommand2
+        swerveControllerCommand,swerveControllerCommand2
     );
 }
 }

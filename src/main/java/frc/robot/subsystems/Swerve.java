@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+//import com.analog.adis16448.frc.ADIS16448_IMU;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -21,6 +22,7 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public static AHRS gyro;
+    //private static final ADIS16448_IMU imu = new ADIS16448_IMU();
 
     public Swerve() {
         gyro = new AHRS(SPI.Port.kMXP);
@@ -95,6 +97,10 @@ public class Swerve extends SubsystemBase {
         double yaw = gyro.getYaw();
         //return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - ypr[0]) : Rotation2d.fromDegrees(ypr[0]);
         return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - yaw) : Rotation2d.fromDegrees(yaw);
+    }
+
+    public double getDoubleYaw(){
+        return gyro.getYaw();
     }
 
     @Override

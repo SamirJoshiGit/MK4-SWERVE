@@ -6,6 +6,7 @@ import frc.robot.subsystems.Swerve;
 
 import java.util.List;
 
+import edu.wpi.first.wpilibj.Ultrasonic.Unit;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -40,7 +41,13 @@ public class exampleAuto extends SequentialCommandGroup {
 
         Trajectory waypointlist = 
             TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0))), 
+                List.of(new Pose2d(0, 0, new Rotation2d(0)), 
+                    new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0))), 
+                config);
+        Trajectory turnrightTrajectory = 
+            TrajectoryGenerator.generateTrajectory(
+                List.of(new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0)), 
+                    new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide + Units.feetToMeters(3.2), new Rotation2d(0))), 
                 config);
 
         var thetaController =
@@ -58,11 +65,21 @@ public class exampleAuto extends SequentialCommandGroup {
                 thetaController,
                 s_Swerve::setModuleStates,
                 s_Swerve);
+        SwerveControllerCommand swerveControllerLeft =
+            new SwerveControllerCommand(
+                turnrightTrajectory,
+                s_Swerve::getPose,
+                Constants.Swerve.swerveKinematics,
+                new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+                new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+                thetaController,
+                s_Swerve::setModuleStates,
+                s_Swerve);    
 
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(waypointlist.getInitialPose())),
-            swerveControllerCommand
+            swerveControllerCommand, swerveControllerLeft
         );
     }
 }

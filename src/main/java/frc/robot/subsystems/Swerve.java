@@ -4,7 +4,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.kauailabs.navx.frc.AHRS;
 
-import frc.robot.SwerveModule;
 import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;

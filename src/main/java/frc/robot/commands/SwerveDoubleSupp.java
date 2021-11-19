@@ -49,8 +49,8 @@ public class SwerveDoubleSupp extends CommandBase {
 
     @Override
     public void execute() {
-        double yAxis = -y.getAsDouble();
-        double xAxis = -x.getAsDouble();
+        double yAxis = y.getAsDouble();
+        double xAxis = x.getAsDouble();
         double rAxis = -r.getAsDouble();
         
         /* Deadbands */

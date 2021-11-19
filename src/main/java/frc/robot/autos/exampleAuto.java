@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.constraint.EllipticalRegionConstraint;
+import edu.wpi.first.wpilibj.trajectory.constraint.RectangularRegionConstraint;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -25,7 +27,8 @@ public class exampleAuto extends SequentialCommandGroup {
         TrajectoryConfig config =
             new TrajectoryConfig(
                     Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                    Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared).setReversed(true)
+                    Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                    .setReversed(true)
                 .setKinematics(Constants.Swerve.swerveKinematics);
 
         // An example trajectory to follow.  All units in meters.
@@ -39,15 +42,19 @@ public class exampleAuto extends SequentialCommandGroup {
                 new Pose2d(-1, 0, new Rotation2d(0)),
                 config);
 
+
         Trajectory waypointlist = 
             TrajectoryGenerator.generateTrajectory(
                 List.of(new Pose2d(0, 0, new Rotation2d(0)), 
-                    new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0))), 
+                    new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0))
+                    ,new Pose2d(-Units.feetToMeters(5.08)-AutoConstants.kOffset, -AutoConstants.kOffsetSide + Units.feetToMeters(3.5), new Rotation2d(0)), 
+                    new Pose2d(-Units.feetToMeters(.1), 0, new Rotation2d(0))), 
                 config);
+
         Trajectory turnrightTrajectory = 
             TrajectoryGenerator.generateTrajectory(
                 List.of(new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0)), 
-                    new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide + Units.feetToMeters(3.2), new Rotation2d(0))), 
+                    new Pose2d(-Units.feetToMeters(5.15), -AutoConstants.kOffsetSide + Units.feetToMeters(3.5), new Rotation2d(0))), 
                 config);
 
         var thetaController =
@@ -79,7 +86,7 @@ public class exampleAuto extends SequentialCommandGroup {
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(waypointlist.getInitialPose())),
-            swerveControllerCommand, swerveControllerLeft
+            swerveControllerCommand
         );
     }
 }

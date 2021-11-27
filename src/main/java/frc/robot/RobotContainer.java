@@ -42,7 +42,7 @@ public class RobotContainer {
   private final Limelight m_limelight = new Limelight();
   //commands
   private final SwerveDoubleSupp swerveControl = new SwerveDoubleSupp(s_Swerve, () -> xDrive.getX(Hand.kLeft), () -> xDrive.getY(Hand.kLeft), () -> xDrive.getX(Hand.kRight), translationAxis, strafeAxis, rotationAxis, true, true);
-  private final LimelightFollower follow = new LimelightFollower(s_Swerve, m_limelight);
+  private final LimelightFollower follow = new LimelightFollower(s_Swerve, m_limelight, false);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     boolean fieldRelative = true;

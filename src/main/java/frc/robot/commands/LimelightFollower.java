@@ -16,7 +16,9 @@ import frc.robot.subsystems.Swerve;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LimelightFollower extends PIDCommand {
   /** Creates a new LimelightFollower. */
-  public LimelightFollower(Swerve m_Swerve, Limelight m_Limelight) {
+  private boolean finishAtEnd;
+  private Limelight m_Limelight;
+  public LimelightFollower(Swerve m_Swerve, Limelight m_Limelight, boolean finishAtEnd) {
     super(
         // The controller that the command will use
         new PIDController(.1, 0, 0),
@@ -29,6 +31,8 @@ public class LimelightFollower extends PIDCommand {
           // Use the output here
           m_Swerve.drive(new Translation2d(0, 0), output, true, true);
         });
+        this.finishAtEnd= finishAtEnd;
+        this.m_Limelight =m_Limelight;  
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }
@@ -36,6 +40,6 @@ public class LimelightFollower extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+      return finishAtEnd && m_Limelight.limelightOffset() < Math.abs(.1);
   }
 }

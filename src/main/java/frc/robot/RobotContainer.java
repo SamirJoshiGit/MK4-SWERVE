@@ -34,13 +34,15 @@ public class RobotContainer {
   private final int rotationAxis = XboxController.Axis.kRightX.value;
 
   /* Driver Buttons */
-  private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kBumperLeft.value);
+  private final JoystickButton leftBumper = new JoystickButton(driver, XboxController.Button.kBumperLeft.value);
+  private final JoystickButton yButton = new JoystickButton(driver, XboxController.Button.kY.value);
 
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
+  private final Limelight m_limelight = new Limelight();
   //commands
   private final SwerveDoubleSupp swerveControl = new SwerveDoubleSupp(s_Swerve, () -> xDrive.getX(Hand.kLeft), () -> xDrive.getY(Hand.kLeft), () -> xDrive.getX(Hand.kRight), translationAxis, strafeAxis, rotationAxis, true, true);
-
+  private final LimelightFollower follow = new LimelightFollower(s_Swerve, m_limelight);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     boolean fieldRelative = true;
@@ -60,7 +62,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     /* Driver Buttons */
-    zeroGyro.whenActive(new InstantCommand(() -> s_Swerve.zeroGyro()));
+    leftBumper.whenActive(new InstantCommand(() -> s_Swerve.zeroGyro()));
+    yButton.whenHeld(follow, true);
   }
 
   /**

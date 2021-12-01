@@ -41,14 +41,15 @@ public class exampleAuto extends SequentialCommandGroup {
                 // End 3 meters straight ahead of where we started, facing forward
                 new Pose2d(-1, 0, new Rotation2d(0)),
                 config);
-
-
         Trajectory waypointlist = 
             TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(0, 0, new Rotation2d(0)), 
+                List.of(new Pose2d(0, 0, new Rotation2d(0)),
+                    //new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(-90))) 
                     new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0))
+                    //new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(Units.degreesToRadians(-90)))
                     ,new Pose2d(-Units.feetToMeters(5.08)-AutoConstants.kOffset, -AutoConstants.kOffsetSide + Units.feetToMeters(3.5), new Rotation2d(0)), 
-                    new Pose2d(-Units.feetToMeters(.1), 0, new Rotation2d(0))), 
+                    new Pose2d(-Units.feetToMeters(.1), 0, new Rotation2d(0))
+                    ), 
                 config);
 
         Trajectory turnrightTrajectory = 

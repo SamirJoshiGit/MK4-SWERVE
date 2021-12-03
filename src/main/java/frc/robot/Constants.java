@@ -25,7 +25,7 @@ public final class Constants {
         public static final double closedLoopRamp = 0.0;
 
         public static final double driveGearRatio = (6.75 / 1.0); //6.86:1  //6.75
-        public static final double angleGearRatio = (12.8 / 1.0); //12.8:1
+        public static final double angleGearRatio = (12.78 / 1.0); //12.8:1
 
         public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
                 new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
@@ -47,7 +47,7 @@ public final class Constants {
         /* Angle Motor PID Values */
         public static final double angleKP = 0.9;
         public static final double angleKI = 0.0;
-        public static final double angleKD = 13.5;
+        public static final double angleKD = 14;
         public static final double angleKF = 0.0;
 
         /* Drive Motor PID Values */

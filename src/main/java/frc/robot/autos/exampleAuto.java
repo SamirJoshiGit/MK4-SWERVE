@@ -55,8 +55,9 @@ public class exampleAuto extends SequentialCommandGroup {
         Trajectory turnrightTrajectory = 
             TrajectoryGenerator.generateTrajectory(
                 List.of(
-                new Pose2d(-Units.feetToMeters(5.08)-AutoConstants.kOffset, -AutoConstants.kOffsetSide + Units.feetToMeters(3.5), new Rotation2d(Units.degreesToRadians(-90))), 
-                new Pose2d(-Units.feetToMeters(.1), 0, new Rotation2d(0))), 
+                new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(0))), 
+                new Pose2d(-Units.feetToMeters(1.5), 0, new Rotation2d(0)),
+                new Pose2d(-Units.feetToMeters(0.2), Units.feetToMeters(5.1)+AutoConstants.kOffset, new Rotation2d(0))), 
                 config);
 
         var thetaController =
@@ -89,11 +90,12 @@ public class exampleAuto extends SequentialCommandGroup {
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(waypointlist.getInitialPose())),
             swerveControllerCommand, 
-            new TurnToSpecifiedAngle(s_Swerve, s_Swerve.getDoubleYaw() , 90),
+            new TurnToSpecifiedAngle(s_Swerve, s_Swerve.getDoubleYaw() , 93.5),
             new InstantCommand(() ->  s_Swerve.drive(new Translation2d(0, 0), 0, true, true)),
             new Wait(3), 
             new InstantCommand(() -> s_Swerve.resetOdometry(turnrightTrajectory.getInitialPose())),
-            swerveControllerLeft
+            swerveControllerLeft,
+            new TurnToSpecifiedAngle(s_Swerve, s_Swerve.getDoubleYaw() , 90)
         );
     }
 }

@@ -28,7 +28,15 @@ public class TurnToSpecifiedAngle extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          s_Swerve.drive(new Translation2d(0, 0), output, true, true);
+          if(output < .07 && output > 0){
+            s_Swerve.drive(new Translation2d(0, 0), .08, true, true);
+          }
+          else if(output > -.07 && output < 0){
+            s_Swerve.drive(new Translation2d(0, 0), -.08, true, true);
+          }
+          else{
+            s_Swerve.drive(new Translation2d(0, 0), output, true, true);
+          }
         });
         this.currAngle = currAngle;
         this.angle = angle;

@@ -24,8 +24,8 @@ public final class Constants {
         public static final double openLoopRamp = 0.25;
         public static final double closedLoopRamp = 0.0;
 
-        public static final double driveGearRatio = (6.75 / 1.0); //6.86:1  //6.75
-        public static final double angleGearRatio = (12.78 / 1.0); //12.8:1
+        public static final double driveGearRatio = (6.6 / 1.0); //6.86:1  //6.75 //6.5 (seems to be the ratio with the least amount of clicks)
+        public static final double angleGearRatio = (12.78 / 1.0); //12.8:1 //12.78
 
         public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
                 new Translation2d(wheelBase / 2.0, trackWidth / 2.0),

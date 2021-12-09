@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.Globals;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Swerve;
 
@@ -18,7 +19,7 @@ public class LimelightFollowToPoint extends PIDCommand {
   private Limelight m_Limelight;
   private double m_stopPoint;
   /** Creates a new LimelightFollowToPoint. */
-  public LimelightFollowToPoint(Swerve m_Swerve, Limelight m_Limelight, boolean finishAtEnd, double m_stopPoint) {
+  public LimelightFollowToPoint(Swerve m_Swerve, Limelight m_Limelight, boolean finishAtEnd, double m_stopPoint, boolean runConcurrently) {
     super(
         // The controller that the command will use
         new PIDController(1, 0, 0),
@@ -29,10 +30,16 @@ public class LimelightFollowToPoint extends PIDCommand {
         // This uses the output
         output -> {
           if(m_Limelight.limelightArea() == 0){
-            m_Swerve.drive(new Translation2d(0, 0), 0, true, true);
+            if(!runConcurrently){
+              m_Swerve.drive(new Translation2d(0, 0), 0, true, true);
+            }
+            Globals.movingOutput = 0;
           }
           else{
-            m_Swerve.drive(new Translation2d(-output, 0), 0, true, true);
+            if(!runConcurrently){
+              m_Swerve.drive(new Translation2d(-output, 0), 0, true, true);
+            }
+            Globals.movingOutput = output;
           }
           
           // Use the output here

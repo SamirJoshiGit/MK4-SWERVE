@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.Globals;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Swerve;
 
@@ -18,7 +19,7 @@ public class LimelightFollower extends PIDCommand {
   /** Creates a new LimelightFollower. */
   private boolean finishAtEnd;
   private Limelight m_Limelight;
-  public LimelightFollower(Swerve m_Swerve, Limelight m_Limelight, boolean finishAtEnd) {
+  public LimelightFollower(Swerve m_Swerve, Limelight m_Limelight, boolean finishAtEnd, boolean runConcurrently) {
     super(
         // The controller that the command will use
         new PIDController(.35, 0, 0),
@@ -29,7 +30,10 @@ public class LimelightFollower extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          m_Swerve.drive(new Translation2d(0, 0), output, true, true);
+          if(!runConcurrently){
+            m_Swerve.drive(new Translation2d(0, 0), output, true, true);
+          }
+          Globals.rotatingOutput = output;
         });
         this.finishAtEnd= finishAtEnd;
         this.m_Limelight =m_Limelight;  

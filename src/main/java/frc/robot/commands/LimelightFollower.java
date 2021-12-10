@@ -44,6 +44,6 @@ public class LimelightFollower extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-      return finishAtEnd && m_Limelight.limelightOffset() < Math.abs(.1);
+      return finishAtEnd && Math.abs(m_Limelight.limelightOffset()) < Math.abs(.3);
   }
 }

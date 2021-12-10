@@ -22,13 +22,15 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.LimelightFollower;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Swerve;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LineWith180Flip extends SequentialCommandGroup {
-  public LineWith180Flip(Swerve s_Swerve){
+  public LineWith180Flip(Swerve s_Swerve, Limelight m_Limelight){
     TrajectoryConfig config =
         new TrajectoryConfig(
                 Constants.AutoConstants.kMaxSpeedMetersPerSecond,
@@ -37,15 +39,15 @@ public class LineWith180Flip extends SequentialCommandGroup {
 
 
     // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d(s_Swerve.getDoubleYaw())),
-                // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(-Units.feetToMeters(3)-AutoConstants.kOffset, .01)), 
-                // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0)),
-                config);
+    Trajectory firstWaypoint = 
+    TrajectoryGenerator.generateTrajectory(
+        List.of(new Pose2d(0, 0, new Rotation2d(0)),
+            //new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(-90))) 
+            new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(0)),
+            new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, .5, new Rotation2d(0))
+            //new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(Units.degreesToRadians(-90)))
+            ), 
+        config);
 
     var thetaController =
         new ProfiledPIDController(
@@ -54,7 +56,7 @@ public class LineWith180Flip extends SequentialCommandGroup {
 
     SwerveControllerCommand swerveControllerCommand =
         new SwerveControllerCommand(
-            exampleTrajectory,
+            firstWaypoint,
             s_Swerve::getPose,
             Constants.Swerve.swerveKinematics,
             new PIDController(Constants.AutoConstants.kPXController, 0, 0),
@@ -65,8 +67,10 @@ public class LineWith180Flip extends SequentialCommandGroup {
 
 
     addCommands(
-        new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-        swerveControllerCommand
+        new InstantCommand(() -> s_Swerve.resetOdometry(firstWaypoint.getInitialPose())),
+        swerveControllerCommand, new InstantCommand(() ->  s_Swerve.drive(new Translation2d(0, 0), 0, true, true)), 
+        new LimelightFollower(s_Swerve, m_Limelight, false, false) 
+        //
     );
 }
 }

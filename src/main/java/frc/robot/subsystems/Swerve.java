@@ -21,13 +21,14 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public static AHRS gyro;
+    public static double startAngle;
     //private static final ADIS16448_IMU imu = new ADIS16448_IMU();
 
     public Swerve() {
         gyro = new AHRS(SPI.Port.kMXP);
         //gyro.configFactoryDefault();
         zeroGyro();
-        
+        startAngle = getDoubleYaw();
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw());
 
         mSwerveMods = new SwerveModule[] {

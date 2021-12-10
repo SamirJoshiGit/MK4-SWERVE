@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+
 import java.util.function.DoubleSupplier;
 
 import frc.robot.autos.*;
@@ -39,6 +41,12 @@ public class RobotContainer {
   private final JoystickButton xButton = new JoystickButton(driver, XboxController.Button.kX.value);
   private final JoystickButton aButton = new JoystickButton(driver, XboxController.Button.kA.value);
 
+  private final POVButton zero = new POVButton(driver, 0);
+  private final POVButton oneEighty = new POVButton(driver, 180);
+  private final POVButton twoSeventy = new POVButton(driver, 270);
+  private final POVButton ninety = new POVButton(driver, 90);
+
+
   /* Subsystems */
   private final Swerve s_Swerve = new Swerve();
   private final Limelight m_limelight = new Limelight();
@@ -47,6 +55,11 @@ public class RobotContainer {
   private final LimelightFollower follow = new LimelightFollower(s_Swerve, m_limelight, false, false);
   private final LimelightFollowToPoint followToPoint = new LimelightFollowToPoint(s_Swerve, m_limelight, false, 1, false);
   private final FollowTarget followTarget = new FollowTarget(s_Swerve, m_limelight, false, 1.1);
+
+  private final TurnToSpecifiedAngle turn90 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, 90);
+  private final TurnToSpecifiedAngle turn180 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, -90);
+  private final TurnToSpecifiedAngle turn0 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, 0);
+  private final TurnToSpecifiedAngle turn270 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, 180);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     boolean fieldRelative = true;
@@ -70,6 +83,11 @@ public class RobotContainer {
     yButton.whenHeld(follow, true);
     xButton.whenHeld(followToPoint, true);
     aButton.whenHeld(followTarget, true);
+
+    //zero.whenPressed(turn0, true);
+    //ninety.whenPressed(turn90, true);
+    //oneEighty.whenPressed(turn180, true);
+    //twoSeventy.whenPressed(turn270, true);
   }
 
   /**
@@ -79,9 +97,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new exampleAuto(s_Swerve);
+    //return new exampleAuto(s_Swerve);
     //return new TrenchAuto(s_Swerve);
-    //return new LineWith180Flip(s_Swerve);
+    return new LineWith180Flip(s_Swerve, m_limelight);
     //return new AccuracyTest(s_Swerve);
 
 

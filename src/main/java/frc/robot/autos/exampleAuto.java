@@ -90,12 +90,12 @@ public class exampleAuto extends SequentialCommandGroup {
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(waypointlist.getInitialPose())),
             swerveControllerCommand, 
-            new TurnToSpecifiedAngle(s_Swerve, s_Swerve.getDoubleYaw() , 93.5),
+            new TurnToSpecifiedAngle(s_Swerve, s_Swerve.getDoubleYaw() , 93.5, true),
             new InstantCommand(() ->  s_Swerve.drive(new Translation2d(0, 0), 0, true, true)),
             new Wait(3), 
             new InstantCommand(() -> s_Swerve.resetOdometry(turnrightTrajectory.getInitialPose())),
             swerveControllerLeft,
-            new TurnToSpecifiedAngle(s_Swerve, s_Swerve.getDoubleYaw() , 0)
+            new TurnToSpecifiedAngle(s_Swerve, s_Swerve.getDoubleYaw() , -10, true)
         );
     }
 }

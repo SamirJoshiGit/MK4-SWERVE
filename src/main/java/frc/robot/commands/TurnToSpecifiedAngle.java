@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
@@ -16,8 +17,9 @@ public class TurnToSpecifiedAngle extends PIDCommand {
   private double angle;
   private double currAngle;
   private Swerve s_Swerve;
+  private boolean endOnTime;
   /** Creates a new TurnToSpecifiedAngle. */
-  public TurnToSpecifiedAngle(Swerve s_Swerve, double currAngle, double angle) {
+  public TurnToSpecifiedAngle(Swerve s_Swerve, double currAngle, double angle, boolean endOnTime) {
     super(
         // The controller that the command will use
         new PIDController(.15, 0, 0),
@@ -38,9 +40,11 @@ public class TurnToSpecifiedAngle extends PIDCommand {
             s_Swerve.drive(new Translation2d(0, 0), output, true, true);
           //}
         });
+        
         this.currAngle = currAngle;
         this.angle = angle;
         this.s_Swerve = s_Swerve;
+        this.endOnTime = endOnTime;
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }
@@ -48,6 +52,6 @@ public class TurnToSpecifiedAngle extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(s_Swerve.getDoubleYaw() - (currAngle + angle)) < 10;
+    return (Math.abs(s_Swerve.getDoubleYaw()) < 10);
   }
 }

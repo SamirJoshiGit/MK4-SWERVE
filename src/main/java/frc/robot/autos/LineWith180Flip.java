@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.LimelightFollower;
+import frc.robot.commands.TurnToSpecifiedAngle;
+import frc.robot.commands.Wait;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Swerve;
 
@@ -49,6 +51,18 @@ public class LineWith180Flip extends SequentialCommandGroup {
             ), 
         config);
 
+    Trajectory secondWaypoint = 
+    TrajectoryGenerator.generateTrajectory(
+        List.of(new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, .5, new Rotation2d(0)),
+            //new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(-90))) 
+            new Pose2d(-Units.feetToMeters(3)-AutoConstants.kOffset, .25, new Rotation2d(0)),
+            new Pose2d(-Units.feetToMeters(1)-AutoConstants.kOffset, .5, new Rotation2d(0)),
+            new Pose2d(0, 0, new Rotation2d(0))
+            //new Pose2d(-Units.feetToMeters(5)-AutoConstants.kOffset, -AutoConstants.kOffsetSide, new Rotation2d(Units.degreesToRadians(-90)))
+            ), 
+        config);
+
+
     var thetaController =
         new ProfiledPIDController(
             Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
@@ -64,12 +78,26 @@ public class LineWith180Flip extends SequentialCommandGroup {
             thetaController,
             s_Swerve::setModuleStates,
             s_Swerve);
+    SwerveControllerCommand swerveControllerBack =
+        new SwerveControllerCommand(
+            secondWaypoint,
+            s_Swerve::getPose,
+            Constants.Swerve.swerveKinematics,
+            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+            new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+            thetaController,
+            s_Swerve::setModuleStates,
+            s_Swerve);
 
 
     addCommands(
         new InstantCommand(() -> s_Swerve.resetOdometry(firstWaypoint.getInitialPose())),
         swerveControllerCommand, new InstantCommand(() ->  s_Swerve.drive(new Translation2d(0, 0), 0, true, true)), 
-        new LimelightFollower(s_Swerve, m_Limelight, false, false) 
+        new LimelightFollower(s_Swerve, m_Limelight, true, false), 
+        new InstantCommand(() ->  s_Swerve.drive(new Translation2d(0, 0), 0, true, true)),
+        new Wait(1), 
+        new TurnToSpecifiedAngle(s_Swerve, s_Swerve.getDoubleYaw(), 0, true),
+        swerveControllerBack 
         //
     );
 }

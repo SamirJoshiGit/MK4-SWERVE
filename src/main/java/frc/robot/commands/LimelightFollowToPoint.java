@@ -22,7 +22,7 @@ public class LimelightFollowToPoint extends PIDCommand {
   public LimelightFollowToPoint(Swerve m_Swerve, Limelight m_Limelight, boolean finishAtEnd, double m_stopPoint, boolean runConcurrently) {
     super(
         // The controller that the command will use
-        new PIDController(1, 0, 0),
+        new PIDController(1.2, 0, 0),
         // This should return the measurement
         () -> m_Limelight.limelightArea(),
         // This should return the setpoint (can also be a constant)
@@ -54,6 +54,6 @@ public class LimelightFollowToPoint extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return finishAtEnd && (m_stopPoint-m_Limelight.limelightArea() <.07);
+    return finishAtEnd && (m_stopPoint-m_Limelight.limelightArea() <.2);
   }
 }

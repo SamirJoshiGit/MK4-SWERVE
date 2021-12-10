@@ -56,10 +56,10 @@ public class RobotContainer {
   private final LimelightFollowToPoint followToPoint = new LimelightFollowToPoint(s_Swerve, m_limelight, false, 1, false);
   private final FollowTarget followTarget = new FollowTarget(s_Swerve, m_limelight, false, 1.1);
 
-  private final TurnToSpecifiedAngle turn90 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, 90);
-  private final TurnToSpecifiedAngle turn180 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, -90);
-  private final TurnToSpecifiedAngle turn0 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, 0);
-  private final TurnToSpecifiedAngle turn270 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, 180);
+  private final TurnToSpecifiedAngle turn90 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, 90, true);
+  private final TurnToSpecifiedAngle turn180 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, -90, true);
+  private final TurnToSpecifiedAngle turn0 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, 0, true);
+  private final TurnToSpecifiedAngle turn270 = new TurnToSpecifiedAngle(s_Swerve, s_Swerve.startAngle, 180, true);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     boolean fieldRelative = true;
@@ -98,8 +98,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     //return new exampleAuto(s_Swerve);
-    //return new TrenchAuto(s_Swerve);
-    return new LineWith180Flip(s_Swerve, m_limelight);
+    return new TrenchAuto(s_Swerve, m_limelight);
+    //return new LineWith180Flip(s_Swerve, m_limelight);
     //return new AccuracyTest(s_Swerve);
 
 
